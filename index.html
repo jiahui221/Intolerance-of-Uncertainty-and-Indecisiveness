@@ -1,74 +1,823 @@
-<!DOCTYPE html><html class=''>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset='UTF-8'>
-    <meta name="robots" content="noindex">
-    <title>The Experiment Factory information-sampling-task</title>
-    
-<link rel='stylesheet' type='text/css' href='jspsych.css'>
-<link rel='stylesheet' type='text/css' href='default_style.css'>
-<link rel='stylesheet' type='text/css' href='style.css'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Study - Intolerance of Uncertainty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        h3 {
+            color: #333;
+            margin: 20px 0 15px 0;
+            font-size: 18px;
+        }
+
+        p, li {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .contact-info {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover, .checkbox-option:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .radio-option input[type="radio"],
+        .checkbox-option input[type="checkbox"] {
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .scale-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .scale-option {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .scale-option:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .scale-option input[type="radio"] {
+            display: none;
+        }
+
+        .scale-option input[type="radio"]:checked + .scale-label {
+            color: white;
+        }
+
+        .scale-option:has(input:checked) {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
+        .scale-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        button {
+            padding: 14px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .question-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .thank-you {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .thank-you h2 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .thank-you p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+        }
+    </style>
 </head>
-
 <body>
-<script src='js/jquery.min.js'></script>
-<script src="js/math.min.js"></script>
-<script src='js/jspsych/jspsych.js'></script>
-<script src='js/jspsych/plugins/jspsych-text.js'></script>
-<script src='js/jspsych/poldrack_plugins/jspsych-poldrack-text.js'></script>
-<script src='js/jspsych/poldrack_plugins/jspsych-poldrack-instructions.js'></script>
-<script src='js/jspsych/plugins/jspsych-call-function.js'></script>
-<script src='js/jspsych/poldrack_plugins/jspsych-attention-check.js'></script>
-<script src='js/jspsych/poldrack_plugins/jspsych-poldrack-single-stim.js'></script>
-<script src='js/jspsych/plugins/jspsych-survey-text.js'></script>
-<script src='js/jspsych/poldrack_plugins/jspsych-single-stim-button.js'></script>
-<script src='js/jspsych/poldrack_plugins/poldrack_utils.js'></script>
-<script src='experiment.js'></script>
+    <div class="container">
+        <div class="header">
+            <h1>🌟 Research Study</h1>
+            <p>Intolerance of Uncertainty and Indecisiveness Among University Students</p>
+        </div>
 
-<script>
-$( document ).ready(function() {
+        <div class="content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
 
-    jsPsych.init({
-             timeline: information_sampling_task_experiment,
-             display_element: "getDisplayElement",
-             fullscreen: true,
-             on_trial_finish: function(data){
-               addID('information-sampling-task')
-             },
+            <!-- Section 1: Consent Form -->
+            <div class="section active" id="section1">
+                <h2>Informed Consent Form</h2>
+                <p>Dear participants,</p>
+                <p>You are invited to participate in a research study exploring <strong>The Relationship between Intolerance of Uncertainty and Indecisiveness Among University Students</strong>. Please read the information below carefully to understand the study's purpose, what your participation involves, and your rights as a participant.</p>
 
-             on_finish: function(data){
+                <h3>Description of the study:</h3>
+                <p>This study aims to examine the relationship between intolerance of uncertainty and indecisiveness among university students. Participants will complete a set of validated self-report questionnaires assessing intolerance of uncertainty, and a behavioural task for measuring indecisiveness. This study contributes by providing empirical evidence on the relationship between intolerance of uncertainty and indecisiveness among university students.</p>
 
-                 // Serialize the data
-                 var promise = new Promise(function(resolve, reject) {
-                     var data = jsPsych.data.dataAsJSON();
-                     resolve(data);
-                 })
+                <h3>To take part in this study, you must:</h3>
+                <ul>
+                    <li>Be aged between 18-30 years old</li>
+                    <li>Be a current university student</li>
+                    <li>Have normal color vision</li>
+                    <li>Not have been diagnosed with psychological disorders such as OCD and anxiety disorder</li>
+                </ul>
 
-                 promise.then(function(data) {
+                <h3>What will be done:</h3>
+                <p>In this form, you will be asked to complete:</p>
+                <ol>
+                    <li>A demographic questionnaire</li>
+                    <li>The Intolerance of Uncertainty Scale (IU-12, 12 items)</li>
+                    <li>The Information Sampling Task</li>
+                </ol>
+                <p>This entire study will take no longer than 30 minutes to complete.</p>
 
+                <h3>Risks and discomfort:</h3>
+                <p>No major risks are anticipated in this study. However, if you experience any discomfort during the study, you are free to close this form without submitting your responses and will not be held responsible. If you experience any discomfort, you may contact one of the following or any reputable counselling centre near you.</p>
 
-                     $.ajax({
-                         type: "POST",
-                         url: '/save',
-                         data: { "data": data },
-                         success: function(){ document.location = "/next" },
-                         dataType: "application/json",
+                <div class="contact-info">
+                    <strong>Centre of Psychological and Counselling Services (CPCS)</strong><br>
+                    Website: <a href="https://www.cpcs-helpuni.com/">https://www.cpcs-helpuni.com/</a><br>
+                    Phone: +603 2096 1212 / +603 7849 3200<br>
+                    Email: cpcs@help.edu.my
+                </div>
 
-                         // Endpoint not running, local save
-                         error: function(err) {
+                <div class="contact-info">
+                    <strong>Befrienders KL</strong><br>
+                    Website: <a href="https://www.befrienders.org.my/">https://www.befrienders.org.my/</a><br>
+                    Phone: +603 7627 2929<br>
+                    Email: sam@befrienders.org.my
+                </div>
 
-                             if (err.status == 200){
-                                 document.location = "/next";
-                             } else {
-                                 // If error, assue local save
-                                 jsPsych.data.localSave('information-sampling-task_results.csv', 'csv');
-                             }
-                         }
-                     });
-                 })
-             }
+                <h3>Benefits of this study:</h3>
+                <p>There will not be any direct benefit to you in participating in this study, but you will help the researcher to learn more about the relationship between intolerance of uncertainty and indecisiveness among university students in Malaysia.</p>
 
-      });
-});
-</script>
-</body>
-</html>
+                <h3>Confidentiality:</h3>
+                <p>Your participation in this study will remain completely confidential. No identifying information will be collected and your responses will be recorded anonymously. Only the research team and their academic supervisor will have access to the data, which will be used solely for research purposes. Every effort will be made to ensure your privacy is protected throughout the study.</p>
+
+                <h3>Decision to quit at anytime:</h3>
+                <p>Participation in this study is completely voluntary. If you choose to participate, you can withdraw at any time by simply closing this form without submitting it. There will be no consequences for choosing to withdraw from the study.</p>
+
+                <h3>Rights and complaints:</h3>
+                <div class="info-box">
+                    <p>This study has been reviewed and approved by the Ethics Review Board, Department of Psychology, Faculty of Behavioral Sciences, Education, and Languages at HELP University.</p>
+                    <p><strong>Chairperson, Ethics Review Board</strong><br>
+                    Department of Psychology, Faculty of Behavioural Sciences<br>
+                    Level 3, Block B HELP University – Subang 2<br>
+                    Persiaran Cakerawala, Seksyen U4, 40150 Shah Alam<br>
+                    Selangor Darul Ehsan, Malaysia<br>
+                    Email: psych.erb@help.edu.my<br>
+                    Phone: +603 7849 3000</p>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>For any enquiries of this study, please contact:</strong></p>
+                    <p><strong>Researcher's supervisor:</strong><br>
+                    Ms. Khor Khai Ling<br>
+                    Email: khailing.k@help.edu.my</p>
+                    <p><strong>Researcher:</strong><br>
+                    Pang Jia Hui<br>
+                    Email: B2300221@helplive.edu.my</p>
+                </div>
+
+                <h3>Consent Statement:</h3>
+                <p><strong>I have read and understand the explanation provided to me, and I voluntarily agree to participate in this study.</strong></p>
+
+                <div class="form-group">
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="consent" value="agree" required>
+                            <span>I Agree</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="consent" value="disagree">
+                            <span>I Disagree</span>
+                        </label>
+                    </div>
+                    <span class="error" id="consentError">Please select an option to continue</span>
+                </div>
+
+                <div class="button-group">
+                    <div></div>
+                    <button class="btn-primary" onclick="nextSection(1)">Continue →</button>
+                </div>
+            </div>
+
+            <!-- Section 2: Demographics -->
+            <div class="section" id="section2">
+                <h2>Demographic Information</h2>
+                <p>All information obtained will be fully confidential and will only be used for the purpose of this study.</p>
+
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" min="18" max="30" required>
+                    <span class="error" id="ageError">Please enter your age (18-30)</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender:</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="gender" value="male" required>
+                            <span>Male</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="gender" value="female">
+                            <span>Female</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="gender" value="prefer_not_to_say">
+                            <span>Prefer not to say</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="gender" value="other">
+                            <span>Other: <input type="text" id="genderOther" style="width: 200px; margin-left: 10px;"></span>
+                        </label>
+                    </div>
+                    <span class="error" id="genderError">Please select your gender</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="fieldOfStudy">Field of Study:</label>
+                    <select id="fieldOfStudy" name="fieldOfStudy" required>
+                        <option value="">-- Select your field --</option>
+                        <option value="arts_social_sciences">Arts and Social Sciences</option>
+                        <option value="accounting_business">Accounting & Business</option>
+                        <option value="science_technology">Science & Technology</option>
+                        <option value="education">Education</option>
+                    </select>
+                    <span class="error" id="fieldError">Please select your field of study</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="education">Level of Education:</label>
+                    <select id="education" name="education" required>
+                        <option value="">-- Select your level --</option>
+                        <option value="foundation">Foundation or College</option>
+                        <option value="bachelor">Bachelor's Degree</option>
+                        <option value="master">Master's Degree</option>
+                        <option value="phd">PhD</option>
+                    </select>
+                    <span class="error" id="educationError">Please select your education level</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Nationality:</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="nationality" value="malaysian" required>
+                            <span>Malaysian</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="nationality" value="other">
+                            <span>Other: <input type="text" id="nationalityOther" style="width: 200px; margin-left: 10px;"></span>
+                        </label>
+                    </div>
+                    <span class="error" id="nationalityError">Please select your nationality</span>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="prevSection(2)">← Back</button>
+                    <button class="btn-primary" onclick="nextSection(2)">Continue →</button>
+                </div>
+            </div>
+
+            <!-- Section 3: IUS-12 Scale -->
+            <div class="section" id="section3">
+                <h2>Intolerance of Uncertainty Scale (IUS-12)</h2>
+                <p>The following statements describe how you react to uncertain or unpredictable situations. Please indicate how much each statement describes you.</p>
+                
+                <div class="info-box">
+                    <p><strong>Scale:</strong></p>
+                    <p>1 - Not at all characteristic of me<br>
+                    2 - A little characteristic of me<br>
+                    3 - Somewhat characteristic of me<br>
+                    4 - Very characteristic of me<br>
+                    5 - Entirely characteristic of me</p>
+                </div>
+
+                <p><em>Please answer as honestly as possible. There are no right or wrong answers.</em></p>
+
+                <div id="iusQuestions"></div>
+
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="prevSection(3)">← Back</button>
+                    <button class="btn-primary" onclick="nextSection(3)">Continue →</button>
+                </div>
+            </div>
+
+            <!-- Section 4: Information Sampling Task -->
+            <div class="section" id="section4">
+                <h2>Information Sampling Task</h2>
+                <p>In this task, you will see a grid of grey boxes. Behind each box is either a <span style="color: #e74c3c; font-weight: bold;">RED</span> or <span style="color: #3498db; font-weight: bold;">BLUE</span> color.</p>
+                <p>Your goal is to decide which color is more common in the grid. You can click on boxes to reveal their color. The more boxes you reveal, the more information you have to make your decision.</p>
+                <p><strong>Instructions:</strong> Click boxes to reveal colors, then click "Make Decision" when you're ready to choose which color is more common.</p>
+
+                <div id="istTask" style="margin: 30px 0;"></div>
+
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="prevSection(4)">← Back</button>
+                    <button class="btn-primary" onclick="nextSection(4)">Continue →</button>
+                </div>
+            </div>
+
+            <!-- Section 5: Thank You -->
+            <div class="section" id="section5">
+                <div class="thank-you">
+                    <h2>Thank You! 🌼</h2>
+                    <p>Thank you for taking the time to complete this survey.</p>
+                    <p>Your responses are greatly appreciated and will contribute to a better understanding of how intolerance of uncertainty relates to indecisiveness in a university student population. Your participation provides empirical evidence linking cognitive-emotional factors to decision-making behavior, which can refine existing psychological models of decision-making.</p>
+                    <p>Everything you've shared will remain confidential and used only for academic research purposes.</p>
+                    <p><strong>Thank you again for your time and support — your participation truly makes a difference!</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 1;
+        const totalSections = 5;
+        let formData = {};
+
+        // IUS-12 Questions
+        const iusQuestions = [
+            "Unforeseen events upset me greatly.",
+            "It frustrates me not having all the information I need.",
+            "Uncertainty keeps me from living a full life.",
+            "One should always look ahead so as to avoid surprises.",
+            "A small unforeseen event can spoil everything, even with the best of planning.",
+            "When it's time to act, uncertainty paralyses me.",
+            "When I am uncertain I can't function very well.",
+            "I always want to know what the future has in store for me.",
+            "I can't stand being taken by surprise.",
+            "The smallest doubt can stop me from acting.",
+            "I should be able to organize everything in advance.",
+            "I must get away from all uncertain situations."
+        ];
+
+        // Initialize IUS questions
+        function initIUSQuestions() {
+            const container = document.getElementById('iusQuestions');
+            iusQuestions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-item';
+                questionDiv.innerHTML = `
+                    <div class="question-text">${index + 1}. ${question}</div>
+                    <div class="scale-group">
+                        ${[1, 2, 3, 4, 5].map(value => `
+                            <label class="scale-option">
+                                <input type="radio" name="ius${index}" value="${value}" required>
+                                <span class="scale-label">${value}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        // Initialize Information Sampling Task
+        function initIST() {
+            const container = document.getElementById('istTask');
+            const gridSize = 5;
+            let revealedBoxes = 0;
+            let maxReveals = gridSize * gridSize;
+            
+            // Generate random grid (60% one color, 40% another)
+            const grid = [];
+            const majorityColor = Math.random() > 0.5 ? 'red' : 'blue';
+            const majorityCount = Math.floor(maxReveals * 0.6);
+            
+            for (let i = 0; i < majorityCount; i++) {
+                grid.push(majorityColor);
+            }
+            for (let i = majorityCount; i < maxReveals; i++) {
+                grid.push(majorityColor === 'red' ? 'blue' : 'red');
+            }
+            
+            // Shuffle grid
+            grid.sort(() => Math.random() - 0.5);
+            
+            let html = `
+                <div style="text-align: center;">
+                    <div style="display: inline-grid; grid-template-columns: repeat(${gridSize}, 60px); gap: 10px; margin-bottom: 20px;">
+            `;
+            
+            for (let i = 0; i < maxReveals; i++) {
+                html += `
+                    <div id="box${i}" onclick="revealBox(${i})" 
+                         style="width: 60px; height: 60px; background: #95a5a6; 
+                                border: 2px solid #7f8c8d; border-radius: 6px; 
+                                cursor: pointer; display: flex; align-items: center; 
+                                justify-content: center; font-weight: bold; color: white;
+                                transition: all 0.3s;"
+                         data-color="${grid[i]}">
+                        ?
+                    </div>
+                `;
+            }
+            
+            html += `
+                    </div>
+                    <p style="margin: 20px 0; font-weight: 600;">Boxes revealed: <span id="revealCount">0</span>/${maxReveals}</p>
+                    <div style="margin: 20px 0;">
+                        <button onclick="makeDecision('red')" class="btn-primary" style="margin: 0 10px; background: #e74c3c;">Red is More Common</button>
+                        <button onclick="makeDecision('blue')" class="btn-primary" style="margin: 0 10px; background: #3498db;">Blue is More Common</button>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            
+            window.revealBox = function(index) {
+                const box = document.getElementById('box' + index);
+                if (box.textContent === '?') {
+                    const color = box.getAttribute('data-color');
+                    box.style.background = color === 'red' ? '#e74c3c' : '#3498db';
+                    box.textContent = '';
+                    revealedBoxes++;
+                    document.getElementById('revealCount').textContent = revealedBoxes;
+                    formData.istRevealed = revealedBoxes;
+                }
+            };
+            
+            window.makeDecision = function(choice) {
+                formData.istDecision = choice;
+                formData.istBoxesRevealed = revealedBoxes;
+                formData.istCorrectAnswer = majorityColor;
+                formData.istCorrect = choice === majorityColor;
+                alert(`You chose ${choice}. The correct answer was ${majorityColor}.`);
+            };
+        }
+
+        function updateProgress() {
+            const progress = (currentSection / totalSections) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextSection(section) {
+            // Validate current section
+            if (!validateSection(section)) {
+                return;
+            }
+            
+            // Save data from current section
+            saveData(section);
+            
+            // Check consent
+            if (section === 1) {
+                const consent = document.querySelector('input[name="consent"]:checked');
+                if (consent && consent.value === 'disagree') {
+                    alert('Thank you for your time. Since you did not consent, the study will end here.');
+                    return;
+                }
+            }
+            
+            // Move to next section
+            document.getElementById('section' + section).classList.remove('active');
+            currentSection = section + 1;
+            document.getElementById('section' + currentSection).classList.add('active');
+            updateProgress();
+            window.scrollTo(0, 0);
+            
+            // Initialize special sections
+            if (currentSection === 3 && !document.getElementById('iusQuestions').hasChildNodes()) {
+                initIUSQuestions();
+            }
+            if (currentSection === 4 && !document.getElementById('istTask').hasChildNodes()) {
+                initIST();
+            }
+            
+            // Submit data on last section
+            if (currentSection === 5) {
+                submitData();
+            }
+        }
+
+        function prevSection(section) {
+            document.getElementById('section' + section).classList.remove('active');
+            currentSection = section - 1;
+            document.getElementById('section' + currentSection).classList.add('active');
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function validateSection(section) {
+            // Clear previous errors
+            document.querySelectorAll('.error').forEach(e => e.style.display = 'none');
+            
+            if (section === 1) {
+                const consent = document.querySelector('input[name="consent"]:checked');
+                if (!consent) {
+                    document.getElementById('consentError').style.display = 'block';
+                    return false;
+                }
+            }
+            
+            if (section === 2) {
+                const age = document.getElementById('age').value;
+                const gender = document.querySelector('input[name="gender"]:checked');
+                const field = document.getElementById('fieldOfStudy').value;
+                const education = document.getElementById('education').value;
+                const nationality = document.querySelector('input[name="nationality"]:checked');
+                
+                let valid = true;
+                
+                if (!age || age < 18 || age > 30) {
+                    document.getElementById('ageError').style.display = 'block';
+                    valid = false;
+                }
+                if (!gender) {
+                    document.getElementById('genderError').style.display = 'block';
+                    valid = false;
+                }
+                if (!field) {
+                    document.getElementById('fieldError').style.display = 'block';
+                    valid = false;
+                }
+                if (!education) {
+                    document.getElementById('educationError').style.display = 'block';
+                    valid = false;
+                }
+                if (!nationality) {
+                    document.getElementById('nationalityError').style.display = 'block';
+                    valid = false;
+                }
+                
+                return valid;
+            }
+            
+            if (section === 3) {
+                for (let i = 0; i < iusQuestions.length; i++) {
+                    const answer = document.querySelector(`input[name="ius${i}"]:checked`);
+                    if (!answer) {
+                        alert('Please answer all questions before continuing.');
+                        return false;
+                    }
+                }
+            }
+            
+            if (section === 4) {
+                if (!formData.istDecision) {
+                    alert('Please make a decision (Red or Blue) before continuing.');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        function saveData(section) {
+            if (section === 1) {
+                formData.consent = document.querySelector('input[name="consent"]:checked')?.value;
+                formData.timestamp = new Date().toISOString();
+            }
+            
+            if (section === 2) {
+                formData.age = document.getElementById('age').value;
+                formData.gender = document.querySelector('input[name="gender"]:checked')?.value;
+                if (formData.gender === 'other') {
+                    formData.genderOther = document.getElementById('genderOther').value;
+                }
+                formData.fieldOfStudy = document.getElementById('fieldOfStudy').value;
+                formData.education = document.getElementById('education').value;
+                formData.nationality = document.querySelector('input[name="nationality"]:checked')?.value;
+                if (formData.nationality === 'other') {
+                    formData.nationalityOther = document.getElementById('nationalityOther').value;
+                }
+            }
+            
+            if (section === 3) {
+                formData.iusResponses = {};
+                for (let i = 0; i < iusQuestions.length; i++) {
+                    const answer = document.querySelector(`input[name="ius${i}"]:checked`)?.value;
+                    formData.iusResponses[`q${i+1}`] = answer;
+                }
+            }
+        }
+
+        function submitData() {
+            // Calculate IUS score
+            let iusTotal = 0;
+            for (let key in formData.iusResponses) {
+                iusTotal += parseInt(formData.iusResponses[key]);
+            }
+            formData.iusTotal = iusTotal;
+            
+            // Log data to console (in production, send to server)
+            console.log('Survey Data:', formData);
+            
+            // Save to localStorage as backup
+            localStorage.setItem('surveyData_' + Date.now(), JSON.stringify(formData));
+            
+            // In production, you would send this to your server:
+            // fetch('YOUR_API_ENDPOINT', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(formData)
+            // });
+            
+            alert('Thank you! Your responses have been recorded.');
+        }
+
+        // Initialize on load
+        updateProgress();
