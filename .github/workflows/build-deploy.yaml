@@ -1,15 +1,12 @@
 name: Build Experiment Container
-
 on:
   # Always test on pull request
-  pull_request: []
-
+  pull_request:
   # Deploy on merge to main or master
   push:
     branches:
       - main
       - master
-
 jobs:
   deploy-test-containers:
     runs-on: ubuntu-latest
@@ -17,7 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2        
-
       - name: Build Experiment Factory Container
         env:
           dirname: ${{ github.event.repository.name }}
@@ -31,7 +27,6 @@ jobs:
           docker build -t ghcr.io/${owner}/${dirname} .
           docker tag ghcr.io/${owner}/${dirname}:latest ghcr.io/${owner}/${dirname}:${GITHUB_SHA::8} 
           docker images | grep ghcr
-
       - name: Log in to GitHub Container Registry
         if: (github.event_name != 'pull_request')
         uses: docker/login-action@v1
